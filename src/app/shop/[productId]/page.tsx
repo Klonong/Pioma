@@ -27,13 +27,9 @@ import { HeartIcon, ShoppingCart, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ProductCard } from "@/components/ui/product-card";
+import { Separator } from "@/components/ui/separator";
+import { formatPrice } from "@/lib/utils";
 
-const formatPrice = (price: number) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(price);
 
 // Each item: 100px height + 8px gap (gap-2).
 // 4 visible items: 4×100 + 3×8 = 424px.
@@ -44,9 +40,7 @@ export default function ProductDetailPage() {
   const productId = Array.isArray(params.productId)
     ? params.productId[0]
     : params.productId;
-  const product = products.find((p) => p.id === productId) as
-    | Product
-    | undefined;
+  const product = products.find((p) => p.id === productId) as Product;
 
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
     null,
@@ -68,8 +62,11 @@ export default function ProductDetailPage() {
     );
   }
 
-  const currentImages: string[] =
-    selectedVariant?.images ?? [product.image, product.image, product.image];
+  const currentImages: string[] = selectedVariant?.images ?? [
+    product.image,
+    product.image,
+    product.image,
+  ];
   const mainImage =
     currentImages[selectedImageIdx] ?? currentImages[0] ?? product.image;
 
@@ -245,9 +242,12 @@ export default function ProductDetailPage() {
 
       {/* ── Similar Products ── */}
       {similarProducts.length > 0 && (
-        <div className="mt-20 border-t border-gray-100 pt-12">
+        <div className="mt-20 pt-12">
+          <Separator className="mb-12" />
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-lg font-bold text-gray-900">You May Also Like</h2>
+            <h2 className="text-lg font-bold text-gray-900">
+              You May Also Like
+            </h2>
             <Link
               href="/shop"
               className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-gray-500 hover:text-black transition-colors"
@@ -269,4 +269,3 @@ export default function ProductDetailPage() {
     </BasePageCenter>
   );
 }
-

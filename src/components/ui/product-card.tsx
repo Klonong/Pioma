@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HeartIcon, ShoppingCart } from "lucide-react";
+import { formatPrice } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
@@ -14,13 +15,6 @@ interface ProductCardProps {
 export function ProductCard({ product, onClick }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
 
   return (
     <div className="group cursor-pointer" onClick={onClick}>

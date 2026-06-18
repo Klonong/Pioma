@@ -7,8 +7,8 @@ import { HeartIcon, ShoppingBagIcon, User } from "lucide-react";
 
 const navLinks = [
   { href: "/shop", label: "Shop" },
-  { href: "/category", label: "Category" },
-  { href: "/about", label: "About" },
+  { href: "/#", label: "Best Seller" },
+  { href: "/#", label: "New Arrivals" },
 ];
 
 export default function Header() {
@@ -92,8 +92,8 @@ export default function Header() {
             <HeartIcon size={20} strokeWidth={1.5} />
           </Link>
           <Link
-            href="/account"
-            aria-label="Account"
+            href="/profile"
+            aria-label="Profile"
             className="text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
           >
             <User size={20} strokeWidth={1.5} />

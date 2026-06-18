@@ -27,10 +27,10 @@ const colorHex: Record<string, string> = {
   Burgundy: "#722F37",
   Taupe: "#8B7355",
   Natural: "#D4B896",
-  "Dark Brown": "#3D2314",
+  DarkBrown: "#3D2314",
   Olive: "#6B7C45",
-  "Blue Batik": "#1B4F8A",
-  "Red Batik": "#8B1A2E",
+  BlueBatik: "#1B4F8A",
+  RedBatik: "#8B1A2E",
   Brown: "#7B4F2E",
   Espresso: "#3E1F0E",
   Sand: "#C2B280",
@@ -52,7 +52,6 @@ const createVariants = (
     colorHex: colorHex[color] ?? "#888888",
     images: imgSet(baseImageOffset + index),
   }));
-
 
 export const products: Product[] = [
   {
@@ -82,7 +81,7 @@ export const products: Product[] = [
     material: ["rattan"],
     variants: createVariants("2", "Sumba Weave Shell", 1850000, 1, [
       "Natural",
-      "Dark Brown",
+      "DarkBrown",
     ]),
   },
   {
@@ -93,9 +92,13 @@ export const products: Product[] = [
     image: toImg("1594938298603-c8148c4dae35"),
     category: "shoulder",
     material: ["canvas", "leather"],
-    variants: createVariants("3", "Tempo Canvas Duffle", 2950000, 2, [
+    variants: createVariants("", "Tempo Canvas Duffle", 2950000, 2, [
       "Olive",
       "Black",
+      "Natural",
+      "Dark Brown",
+      "Espresso",
+      "Sand"
     ]),
   },
   {
@@ -149,6 +152,7 @@ export const products: Product[] = [
     variants: createVariants("7", "Yogya Canvas Sling", 950000, 1, [
       "Sand",
       "Olive",
+      "Black",
     ]),
   },
   {

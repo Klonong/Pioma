@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BasePage } from "@/components/base";
 import { Filter } from "@/components/ui/filter";
 import { ProductCard } from "@/components/ui/product-card";
@@ -32,11 +32,14 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const ITEMS_PER_PAGE = 6;
 
 export default function Shop() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const sortByItems = [
     { label: "Newest Arrivals", value: "newest" },
@@ -45,10 +48,29 @@ export default function Shop() {
     { label: "Best Sellers", value: "best-sellers" },
   ];
 
-  const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+  const filteredProducts = products.filter((product) => {
+    const keyword = searchTerm.trim().toLowerCase();
+
+    if (!keyword) return true;
+
+    return (
+      product.name.toLowerCase().includes(keyword) ||
+      product.description.toLowerCase().includes(keyword) ||
+      product.category.toLowerCase().includes(keyword)
+    );
+  });
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProducts.length / ITEMS_PER_PAGE),
+  );
   const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIdx = startIdx + ITEMS_PER_PAGE;
-  const currentProducts = products.slice(startIdx, endIdx);
+  const currentProducts = filteredProducts.slice(startIdx, endIdx);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -83,26 +105,43 @@ export default function Shop() {
           </p>
         </div>
 
-        {/* Sort Section - Responsive */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-4 md:justify-end">
-          <span className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
-            Sort By
-          </span>
-          <Select items={sortByItems} defaultValue={"newest"}>
-            <SelectTrigger className="w-full sm:w-auto sm:max-w-48">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Sort By</SelectLabel>
-                {sortByItems.map((item) => (
-                  <SelectItem key={item.value} value={item.value}>
-                    {item.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+        {/* Controls - Search + Sort */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-4 md:justify-between w-full">
+          <div className="relative w-full sm:max-w-sm">
+            <label htmlFor="product-search" className="sr-only">
+              Search products
+            </label>
+            <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input
+              id="product-search"
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search products"
+              className="w-full h-11 rounded-full border border-gray-200 bg-white/90 pl-11 pr-4 text-sm text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-gray-400 transition-all"
+            />
+          </div>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <span className="text-xs font-semibold tracking-wider text-gray-500 uppercase whitespace-nowrap">
+              Sort By
+            </span>
+            <Select items={sortByItems} defaultValue={"newest"}>
+              <SelectTrigger className="w-full sm:w-auto sm:min-w-48 bg-white/90 border-gray-200 shadow-sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Sort By</SelectLabel>
+                  {sortByItems.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
@@ -115,87 +154,99 @@ export default function Shop() {
 
         {/* Right Content - Products - Full width on mobile */}
         <div className="col-span-1 md:col-span-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {currentProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onClick={() => {
-                  console.log(
-                    `Navigating to product detail page for product ID: ${product.id}`,
-                  );
-                  router.push(`/shop/${product.id}`);
-                }}
-              />
-            ))}
-          </div>
+          {currentProducts.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {currentProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onClick={() => {
+                    console.log(
+                      `Navigating to product detail page for product ID: ${product.id}`,
+                    );
+                    router.push(`/shop/${product.id}`);
+                  }}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-10 text-center">
+              <p className="text-sm text-gray-600">
+                No products found for "{searchTerm}".
+              </p>
+            </div>
+          )}
 
           {/* Pagination */}
-          <div className="mt-12 flex justify-center">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (currentPage > 1) handlePageChange(currentPage - 1);
-                    }}
-                    className={
-                      currentPage === 1 ? "pointer-events-none opacity-50" : ""
-                    }
-                  />
-                </PaginationItem>
+          {filteredProducts.length > ITEMS_PER_PAGE && (
+            <div className="mt-12 flex justify-center">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage > 1) handlePageChange(currentPage - 1);
+                      }}
+                      className={
+                        currentPage === 1
+                          ? "pointer-events-none opacity-50"
+                          : ""
+                      }
+                    />
+                  </PaginationItem>
 
-                {Array.from({ length: totalPages }, (_, i) => {
-                  const page = i + 1;
-                  // Show first page, last page, current page, and pages around current
-                  if (
-                    page === 1 ||
-                    page === totalPages ||
-                    (page >= currentPage - 1 && page <= currentPage + 1)
-                  ) {
-                    return (
-                      <PaginationItem key={page}>
-                        <PaginationLink
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handlePageChange(page);
-                          }}
-                          isActive={page === currentPage}
-                        >
-                          {page}
-                        </PaginationLink>
-                      </PaginationItem>
-                    );
-                  } else if (
-                    (page === 2 && currentPage > 3) ||
-                    (page === totalPages - 1 && currentPage < totalPages - 2)
-                  ) {
-                    return <PaginationEllipsis key={page} />;
-                  }
-                  return null;
-                })}
-
-                <PaginationItem>
-                  <PaginationNext
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (currentPage < totalPages)
-                        handlePageChange(currentPage + 1);
-                    }}
-                    className={
-                      currentPage === totalPages
-                        ? "pointer-events-none opacity-50"
-                        : ""
+                  {Array.from({ length: totalPages }, (_, i) => {
+                    const page = i + 1;
+                    // Show first page, last page, current page, and pages around current
+                    if (
+                      page === 1 ||
+                      page === totalPages ||
+                      (page >= currentPage - 1 && page <= currentPage + 1)
+                    ) {
+                      return (
+                        <PaginationItem key={page}>
+                          <PaginationLink
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handlePageChange(page);
+                            }}
+                            isActive={page === currentPage}
+                          >
+                            {page}
+                          </PaginationLink>
+                        </PaginationItem>
+                      );
+                    } else if (
+                      (page === 2 && currentPage > 3) ||
+                      (page === totalPages - 1 && currentPage < totalPages - 2)
+                    ) {
+                      return <PaginationEllipsis key={page} />;
                     }
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
+                    return null;
+                  })}
+
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage < totalPages)
+                          handlePageChange(currentPage + 1);
+                      }}
+                      className={
+                        currentPage === totalPages
+                          ? "pointer-events-none opacity-50"
+                          : ""
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
         </div>
       </div>
     </BasePage>

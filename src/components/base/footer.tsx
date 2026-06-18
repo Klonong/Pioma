@@ -33,7 +33,7 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0f0f0f] text-white mt-auto">
+    <footer className="bg-[#0f0f0f] text-white mt-10">
       {/* Top strip */}
       <div className="border-b border-white/10 px-6 md:px-16 lg:px-24 py-12">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
