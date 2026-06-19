@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Truck, Zap, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import type { ShippingData } from "./types";
@@ -66,14 +67,14 @@ export function ShippingStep({
     required = true,
   ) => (
     <div>
-      <label className="block text-xs tracking-widest font-semibold text-primary uppercase mb-1.5">
+      <Label className="block text-xs tracking-widest font-semibold text-primary uppercase mb-1.5">
         {label}
         {!required && (
           <span className="text-muted-foreground normal-case tracking-normal font-normal ml-1">
             (optional)
           </span>
         )}
-      </label>
+      </Label>
       <Input
         placeholder={placeholder}
         value={data[key] as string}

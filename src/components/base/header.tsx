@@ -53,7 +53,7 @@ export default function Header() {
             const isActive = pathname === href || pathname.startsWith(href + "/");
             return (
               <Link
-                key={href}
+                key={label}
                 href={href}
                 className={[
                   "relative text-sm font-medium tracking-wide transition-colors duration-300 py-1 group",

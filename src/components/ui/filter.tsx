@@ -165,12 +165,12 @@ function CategoryItems({
             id={item.value}
             className="transition-all duration-200"
           />
-          <label
+          <Label
             htmlFor={item.value}
             className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors duration-200 cursor-pointer flex-1"
           >
             {item.label}
-          </label>
+          </Label>
           {item.count !== undefined && (
             <span className="text-xs text-gray-400">
               ({String(item.count).padStart(2, "0")})

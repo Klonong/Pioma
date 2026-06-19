@@ -3,6 +3,7 @@
 import { ArrowLeft, CreditCard, Landmark, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import type { PaymentData, PaymentMethod } from "./types";
@@ -86,9 +87,9 @@ export function PaymentStep({
       {data.method === "card" && (
         <div className="space-y-4">
           <div>
-            <label className="block text-xs tracking-widest font-semibold text-primary uppercase mb-1.5">
+            <Label className="block text-xs tracking-widest font-semibold text-primary uppercase mb-1.5">
               Name on Card
-            </label>
+            </Label>
             <Input
               placeholder="ALEXANDRA K."
               value={data.nameOnCard}
@@ -97,9 +98,9 @@ export function PaymentStep({
             />
           </div>
           <div>
-            <label className="block text-xs tracking-widest font-semibold text-primary uppercase mb-1.5">
+            <Label className="block text-xs tracking-widest font-semibold text-primary uppercase mb-1.5">
               Card Number
-            </label>
+            </Label>
             <div className="relative">
               <Input
                 placeholder="0000 0000 0000 0000"
@@ -120,9 +121,9 @@ export function PaymentStep({
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs tracking-widest font-semibold text-primary uppercase mb-1.5">
+              <Label className="block text-xs tracking-widest font-semibold text-primary uppercase mb-1.5">
                 Expiry Date
-              </label>
+              </Label>
               <Input
                 placeholder="MM / YY"
                 value={data.expiry}
@@ -137,9 +138,9 @@ export function PaymentStep({
               />
             </div>
             <div>
-              <label className="block text-xs tracking-widest font-semibold text-primary uppercase mb-1.5">
+              <Label className="block text-xs tracking-widest font-semibold text-primary uppercase mb-1.5">
                 CVV
-              </label>
+              </Label>
               <Input
                 placeholder="•••"
                 value={data.cvv}
@@ -158,7 +159,7 @@ export function PaymentStep({
               checked={data.saveCard}
               onCheckedChange={(checked) => onChange({ saveCard: !!checked })}
             />
-            <label
+            <Label
               htmlFor="save-card"
               className="text-xs text-muted-foreground leading-relaxed cursor-pointer"
             >
@@ -166,7 +167,7 @@ export function PaymentStep({
               <span className="text-tertiary">
                 Your payment data is encrypted and secure.
               </span>
-            </label>
+            </Label>
           </div>
         </div>
       )}

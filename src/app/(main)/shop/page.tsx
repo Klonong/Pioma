@@ -108,9 +108,9 @@ export default function Shop() {
         {/* Controls - Search + Sort */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-4 md:justify-between w-full">
           <div className="relative w-full sm:max-w-sm">
-            <label htmlFor="product-search" className="sr-only">
+            <Label htmlFor="product-search" className="sr-only">
               Search products
-            </label>
+            </Label>
             <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
               id="product-search"

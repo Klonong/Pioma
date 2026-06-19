@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/base/header";
-import Footer from "@/components/base/footer";
+import { AuthProvider } from "@/context/AuthProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const playfairDisplay = Playfair_Display({
   weight: ["400", "500", "700"],
@@ -34,9 +34,10 @@ export default function RootLayout({
       className={`${inter.variable} ${playfairDisplay.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Header />
-        {children}
-        <Footer />
+        <AuthProvider>
+          {children}
+          <Toaster richColors position="top-right" />
+        </AuthProvider>
       </body>
     </html>
   );
