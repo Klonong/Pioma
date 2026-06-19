@@ -34,6 +34,7 @@ import {
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const ITEMS_PER_PAGE = 6;
 

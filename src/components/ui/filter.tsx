@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
+import { Label } from "./label";
 
 const styles = `
   @keyframes slideDown {
@@ -264,7 +265,7 @@ function PriceRangeItems() {
         max={10000}
         step={100}
         value={priceRange}
-        onValueChange={setPriceRange}
+        // onValueChange={setPriceRange}
         className="w-full"
       />
       <div className="flex justify-between items-center text-sm">
