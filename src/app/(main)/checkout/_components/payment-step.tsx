@@ -45,7 +45,6 @@ export function PaymentStep({
         Please select your preferred payment method and provide details below.
       </p>
 
-      {/* Method selector */}
       <div className="mb-6">
         <p className="text-xs tracking-widest font-semibold text-primary uppercase mb-3">
           Payment Method
@@ -172,7 +171,6 @@ export function PaymentStep({
         </div>
       )}
 
-      {/* Bank transfer */}
       {data.method === "bank" && (
         <div className="rounded-lg border border-input p-5 bg-secondary/20 space-y-3">
           <p className="text-sm font-medium text-primary">Bank Transfer Details</p>
@@ -196,7 +194,6 @@ export function PaymentStep({
         </div>
       )}
 
-      {/* Digital wallet */}
       {data.method === "wallet" && (
         <div className="rounded-lg border border-input p-5 bg-secondary/20 space-y-3">
           <p className="text-sm font-medium text-primary">Select Digital Wallet</p>

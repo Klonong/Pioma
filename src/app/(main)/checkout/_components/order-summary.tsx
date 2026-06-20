@@ -102,7 +102,7 @@ export function OrderSummary({
         </p>
         <div className="flex gap-2">
           <Input
-            placeholder="ESTETIKA10"
+            placeholder="Pioma10"
             value={promo}
             onChange={(e) => setPromo(e.target.value)}
             className="text-sm h-10"

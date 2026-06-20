@@ -12,7 +12,7 @@ import {
   Landmark,
   Truck,
 } from "lucide-react";
-import { BasePage, BasePageCenter } from "@/components/base";
+import { BasePage, BasePageCenter, RightAsideLayout } from "@/components/base";
 import { products } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -94,7 +94,65 @@ export default function CartPage() {
 
   return (
     <BasePageCenter>
-      <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-8 xl:gap-12">
+      <RightAsideLayout
+        asideWidth="340px"
+        aside={
+          <Card className="border border-gray-200 rounded-none shadow-none bg-white sticky top-24">
+            <CardHeader>
+              <CardTitle className="font-headline text-4xl">
+                Order Summary
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent className="space-y-5">
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Subtotal</span>
+                  <span className="font-medium">{formatPrice(subtotal)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Shipping</span>
+                  <span className="text-xs uppercase tracking-wider font-semibold">
+                    Calculated at next step
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Estimated Tax</span>
+                  <span className="font-medium">{formatPrice(0)}</span>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-semibold">Total</span>
+                <span className="font-headline text-5xl">
+                  {formatPrice(subtotal)}
+                </span>
+              </div>
+
+              <Button
+                onClick={() => {
+                  router.push("/checkout");
+                }}
+                className="w-full h-11 rounded-none uppercase tracking-[0.18em] font-semibold bg-black text-white hover:bg-zinc-800"
+              >
+                Proceed to Checkout
+              </Button>
+
+              <p className="text-center text-xs text-gray-500">
+                Complimentary shipping on orders over {formatPrice(500)}
+              </p>
+
+              <div className="flex items-center justify-center gap-4 text-gray-400">
+                <CreditCard className="h-4 w-4" />
+                <Landmark className="h-4 w-4" />
+                <Truck className="h-4 w-4" />
+              </div>
+            </CardContent>
+          </Card>
+        }
+      >
         <section>
           <h1 className="font-headline text-4xl md:text-5xl leading-none">
             Your Bag
@@ -213,64 +271,7 @@ export default function CartPage() {
             Continue Exploring the Collection
           </Link>
         </section>
-
-        <aside>
-          <Card className="border border-gray-200 rounded-none shadow-none bg-white sticky top-24">
-            <CardHeader>
-              <CardTitle className="font-headline text-4xl">
-                Order Summary
-              </CardTitle>
-            </CardHeader>
-
-            <CardContent className="space-y-5">
-              <div className="space-y-3 text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">{formatPrice(subtotal)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Shipping</span>
-                  <span className="text-xs uppercase tracking-wider font-semibold">
-                    Calculated at next step
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Estimated Tax</span>
-                  <span className="font-medium">{formatPrice(0)}</span>
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-semibold">Total</span>
-                <span className="font-headline text-5xl">
-                  {formatPrice(subtotal)}
-                </span>
-              </div>
-
-              <Button
-                onClick={() => {
-                  router.push("/checkout");
-                }}
-                className="w-full h-11 rounded-none uppercase tracking-[0.18em] font-semibold bg-black text-white hover:bg-zinc-800"
-              >
-                Proceed to Checkout
-              </Button>
-
-              <p className="text-center text-xs text-gray-500">
-                Complimentary shipping on orders over {formatPrice(500)}
-              </p>
-
-              <div className="flex items-center justify-center gap-4 text-gray-400">
-                <CreditCard className="h-4 w-4" />
-                <Landmark className="h-4 w-4" />
-                <Truck className="h-4 w-4" />
-              </div>
-            </CardContent>
-          </Card>
-        </aside>
-      </div>
+      </RightAsideLayout>
     </BasePageCenter>
   );
 }

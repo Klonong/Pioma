@@ -1,5 +1,6 @@
 import styled from "styled-components";
 export { default as Footer } from "./footer";
+export { LeftAsideLayout, RightAsideLayout } from "./aside-layouts";
 
 export const BasePage = styled.div`
   padding-left: 5rem;

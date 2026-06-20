@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BasePage } from "@/components/base";
+import { BasePage, LeftAsideLayout } from "@/components/base";
 import { Filter } from "@/components/ui/filter";
 import { ProductCard } from "@/components/ui/product-card";
 import { products } from "@/data/products";
@@ -146,15 +146,7 @@ export default function Shop() {
         </div>
       </div>
 
-      {/* Main Content - Responsive Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 mt-8">
-        {/* Left Sidebar - Filters - Hidden on mobile */}
-        <div className="col-span-1 hidden md:block">
-          <Filter />
-        </div>
-
-        {/* Right Content - Products - Full width on mobile */}
-        <div className="col-span-1 md:col-span-3">
+      <LeftAsideLayout aside={<Filter />} className="mt-8">
           {currentProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {currentProducts.map((product) => (
@@ -248,8 +240,7 @@ export default function Shop() {
               </Pagination>
             </div>
           )}
-        </div>
-      </div>
+      </LeftAsideLayout>
     </BasePage>
   );
 }

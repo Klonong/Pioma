@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BasePage } from "@/components/base";
+import { BasePage, RightAsideLayout } from "@/components/base";
 import { StepIndicator } from "./_components/step-indicator";
 import { OrderSummary } from "./_components/order-summary";
 import { ShippingStep } from "./_components/shipping-step";
@@ -19,7 +19,11 @@ export default function CheckoutPage() {
     <BasePage>
       <StepIndicator current={step} />
 
-      <div className="grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-10 xl:gap-14">
+      <RightAsideLayout
+        asideWidth="380px"
+        className="gap-10 xl:gap-14"
+        aside={<OrderSummary shippingMethod={shippingData.deliveryMethod} />}
+      >
         <div>
           {step === 0 && (
             <ShippingStep
@@ -44,9 +48,7 @@ export default function CheckoutPage() {
             />
           )}
         </div>
-
-        <OrderSummary shippingMethod={shippingData.deliveryMethod} />
-      </div>
+      </RightAsideLayout>
     </BasePage>
   );
 }

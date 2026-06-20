@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { formatPrice } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const recentActivity = [
   {
@@ -43,24 +44,27 @@ const quickLinks = [
     icon: Package,
     title: "My Orders",
     description: "Track deliveries, view order history and manage returns.",
+    link: "/orders",
   },
   {
     icon: Settings,
     title: "Account Settings",
     description:
       "Update your security, email preferences, and personal details.",
+    link: "/profile/account-settings",
   },
   {
     icon: MapPin,
     title: "Addresses",
     description: "Manage shipping addresses for faster checkout experiences.",
+    link: "/profile/addresses",
   },
 ];
 
 export default function ProfilePage() {
+  const router = useRouter();
   return (
     <BasePage>
-      {/* Profile Header */}
       <div className="flex items-start justify-between mb-10">
         <div className="flex items-center gap-6">
           <div className="relative">
@@ -94,10 +98,10 @@ export default function ProfilePage() {
         </Button>
       </div>
 
-      {/* Quick Links */}
       <div className="grid grid-cols-3 gap-4 mb-12">
-        {quickLinks.map(({ icon: Icon, title, description }) => (
+        {quickLinks.map(({ icon: Icon, title, description, link }) => (
           <Card
+            onClick={() => router.push(link)}
             key={title}
             className="cursor-pointer hover:shadow-md transition-shadow border-secondary/60"
           >
@@ -153,7 +157,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Wishlist — 1/2 */}
         <div className="w-1/2">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-headline text-2xl font-semibold text-primary">

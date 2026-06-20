@@ -96,7 +96,6 @@ export function ShippingStep({
         Please enter your delivery details carefully.
       </p>
 
-      {/* Saved Addresses */}
       <div className="mb-6">
         <p className="text-sm font-semibold text-primary mb-3">
           Saved Addresses
@@ -161,7 +160,6 @@ export function ShippingStep({
         </div>
       </div>
 
-      {/* Address form — shown when no saved address selected or "new" clicked */}
       {(showForm || (!selectedAddress && !showForm)) && (
         <div className="space-y-5">
           <div className="grid grid-cols-2 gap-4">
@@ -180,7 +178,6 @@ export function ShippingStep({
         </div>
       )}
 
-      {/* Delivery method */}
       <div className="mt-6">
         <p className="text-xs tracking-widest font-semibold text-primary uppercase mb-3">
           Delivery Method
