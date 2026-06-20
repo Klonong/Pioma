@@ -100,11 +100,11 @@ export default function ProductDetailPage() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="mt-8 flex flex-col lg:flex-row lg:justify-center lg:gap-30 gap-10 items-start">
+      <div className="mt-8 flex flex-col lg:flex-row lg:justify-center lg:gap-20 xl:gap-30 gap-6 items-start">
         {/* ── Left: thumbnail strip + main image ── */}
-        <div className="flex gap-3 items-start shrink-0">
-          {/* Vertical thumbnail carousel — max 4 visible */}
-          <div className="relative py-10">
+        <div className="flex gap-3 items-start w-full lg:shrink-0">
+          {/* Vertical thumbnail carousel — only show on lg+ */}
+          <div className="hidden lg:block relative py-10">
             <Carousel
               orientation="vertical"
               opts={{ align: "start", containScroll: "trimSnaps" }}
@@ -146,8 +146,8 @@ export default function ProductDetailPage() {
             </Carousel>
           </div>
 
-          {/* Main image */}
-          <div className="relative w-115 h-130 rounded-2xl overflow-hidden bg-gray-100">
+          {/* Main image — full width on mobile */}
+          <div className="relative w-full aspect-square lg:aspect-[460/520] lg:w-[460px] lg:h-[520px] rounded-2xl overflow-hidden bg-gray-100">
             <Image
               fill
               src={mainImage}
@@ -163,16 +163,32 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
+        {/* Mobile thumbnail dots */}
+        <div className="flex lg:hidden justify-center gap-2 mt-4">
+          {currentImages.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setSelectedImageIdx(idx)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                selectedImageIdx === idx
+                  ? "bg-black w-4"
+                  : "bg-gray-300 hover:bg-gray-400"
+              }`}
+              aria-label={`View image ${idx + 1}`}
+            />
+          ))}
+        </div>
+
         {/* ── Right: product info ── */}
-        <div className="flex-1 lg:max-w-sm pt-1">
+        <div className="flex-1 lg:max-w-sm pt-1 w-full">
           <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">
             {product.category}
           </p>
-          <h1 className="text-2xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
             {product.name}
           </h1>
           <p className="text-sm text-gray-500 mt-2">{product.description}</p>
-          <p className="text-xl font-semibold text-gray-900 mt-5">
+          <p className="text-xl sm:text-2xl font-semibold text-gray-900 mt-5">
             {formatPrice(selectedVariant?.price ?? product.price)}
           </p>
 
@@ -224,7 +240,7 @@ export default function ProductDetailPage() {
           )}
 
           {/* CTA */}
-          <div className="flex gap-3 mt-10">
+          <div className="flex gap-3 mt-8 lg:mt-10">
             <Button className="flex-1 bg-black text-white hover:bg-gray-800 font-semibold tracking-widest text-xs h-12 rounded-full">
               <ShoppingCart className="w-4 h-4 mr-2" />
               ADD TO CART
@@ -232,7 +248,7 @@ export default function ProductDetailPage() {
             <Button
               variant="outline"
               size="icon"
-              className="h-12 w-12 rounded-full border-gray-300 hover:border-black hover:bg-transparent"
+              className="h-12 w-12 rounded-full border-gray-300 hover:border-black hover:bg-transparent shrink-0"
             >
               <HeartIcon className="w-4 h-4" />
             </Button>
@@ -242,10 +258,10 @@ export default function ProductDetailPage() {
 
       {/* ── Similar Products ── */}
       {similarProducts.length > 0 && (
-        <div className="mt-20 pt-12">
-          <Separator className="mb-12" />
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-lg font-bold text-gray-900">
+        <div className="mt-16 lg:mt-20 pt-8 lg:pt-12">
+          <Separator className="mb-8 lg:mb-12" />
+          <div className="flex items-center justify-between mb-6 lg:mb-8">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900">
               You May Also Like
             </h2>
             <Link
@@ -255,7 +271,7 @@ export default function ProductDetailPage() {
               View All <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {similarProducts.map((p) => (
               <ProductCard
                 key={p.id}

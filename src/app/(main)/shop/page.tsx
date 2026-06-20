@@ -94,12 +94,12 @@ export default function Shop() {
       </Breadcrumb>
 
       {/* Header Section - Responsive */}
-      <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-6 md:gap-0 md:items-end mt-6 md:mt-0">
-        <div className="max-w-full md:max-w-1/2">
-          <h1 className="font-headline text-headline-lg text-2xl md:text-4xl mb-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-6 lg:gap-0 lg:items-end mt-6 lg:mt-0">
+        <div className="max-w-full lg:max-w-1/2">
+          <h1 className="font-headline text-3xl sm:text-4xl lg:text-5xl mb-2">
             The Bag Archive
           </h1>
-          <p className="text-sm md:text-base text-gray-700">
+          <p className="text-sm md:text-base text-gray-700 max-w-lg">
             A curated selection of hand-crafted vessels. From traditional
             Balinese weaving to contemporary Jakarta leatherwork, each piece
             tells a story of local mastery.
@@ -107,8 +107,8 @@ export default function Shop() {
         </div>
 
         {/* Controls - Search + Sort */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-4 md:justify-between w-full">
-          <div className="relative w-full sm:max-w-sm">
+        <div className="flex flex-col sm:flex-row lg:items-center gap-3 sm:gap-4 lg:justify-end w-full">
+          <div className="relative w-full sm:max-w-sm lg:max-w-xs">
             <Label htmlFor="product-search" className="sr-only">
               Search products
             </Label>
@@ -124,11 +124,11 @@ export default function Shop() {
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
-            <span className="text-xs font-semibold tracking-wider text-gray-500 uppercase whitespace-nowrap">
+            <span className="text-xs font-semibold tracking-wider text-gray-500 uppercase whitespace-nowrap hidden sm:inline">
               Sort By
             </span>
             <Select items={sortByItems} defaultValue={"newest"}>
-              <SelectTrigger className="w-full sm:w-auto sm:min-w-48 bg-white/90 border-gray-200 shadow-sm">
+              <SelectTrigger className="w-full sm:w-auto sm:min-w-40 lg:w-48 bg-white/90 border-gray-200 shadow-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -147,99 +147,98 @@ export default function Shop() {
       </div>
 
       <LeftAsideLayout aside={<Filter />} className="mt-8">
-          {currentProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {currentProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onClick={() => {
-                    console.log(
-                      `Navigating to product detail page for product ID: ${product.id}`,
-                    );
-                    router.push(`/shop/${product.id}`);
-                  }}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-10 text-center">
-              <p className="text-sm text-gray-600">
-                No products found for "{searchTerm}".
-              </p>
-            </div>
-          )}
+        {currentProducts.length > 0 ? (
+          <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {currentProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onClick={() => {
+                  console.log(
+                    `Navigating to product detail page for product ID: ${product.id}`,
+                  );
+                  router.push(`/shop/${product.id}`);
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-10 text-center">
+            <p className="text-sm text-gray-600">
+              No products found for "{searchTerm}".
+            </p>
+          </div>
+        )}
 
-          {/* Pagination */}
-          {filteredProducts.length > ITEMS_PER_PAGE && (
-            <div className="mt-12 flex justify-center">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (currentPage > 1) handlePageChange(currentPage - 1);
-                      }}
-                      className={
-                        currentPage === 1
-                          ? "pointer-events-none opacity-50"
-                          : ""
-                      }
-                    />
-                  </PaginationItem>
-
-                  {Array.from({ length: totalPages }, (_, i) => {
-                    const page = i + 1;
-                    // Show first page, last page, current page, and pages around current
-                    if (
-                      page === 1 ||
-                      page === totalPages ||
-                      (page >= currentPage - 1 && page <= currentPage + 1)
-                    ) {
-                      return (
-                        <PaginationItem key={page}>
-                          <PaginationLink
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handlePageChange(page);
-                            }}
-                            isActive={page === currentPage}
-                          >
-                            {page}
-                          </PaginationLink>
-                        </PaginationItem>
-                      );
-                    } else if (
-                      (page === 2 && currentPage > 3) ||
-                      (page === totalPages - 1 && currentPage < totalPages - 2)
-                    ) {
-                      return <PaginationEllipsis key={page} />;
+        {/* Pagination */}
+        {filteredProducts.length > ITEMS_PER_PAGE && (
+          <div className="mt-10 md:mt-12 flex justify-center">
+            <Pagination>
+              <PaginationContent className="flex-wrap justify-center">
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (currentPage > 1) handlePageChange(currentPage - 1);
+                    }}
+                    className={
+                      currentPage === 1
+                        ? "pointer-events-none opacity-50"
+                        : ""
                     }
-                    return null;
-                  })}
+                  />
+                </PaginationItem>
 
-                  <PaginationItem>
-                    <PaginationNext
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (currentPage < totalPages)
-                          handlePageChange(currentPage + 1);
-                      }}
-                      className={
-                        currentPage === totalPages
-                          ? "pointer-events-none opacity-50"
-                          : ""
-                      }
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          )}
+                {Array.from({ length: totalPages }, (_, i) => {
+                  const page = i + 1;
+                  if (
+                    page === 1 ||
+                    page === totalPages ||
+                    (page >= currentPage - 1 && page <= currentPage + 1)
+                  ) {
+                    return (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(page);
+                          }}
+                          isActive={page === currentPage}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    );
+                  } else if (
+                    (page === 2 && currentPage > 3) ||
+                    (page === totalPages - 1 && currentPage < totalPages - 2)
+                  ) {
+                    return <PaginationEllipsis key={page} />;
+                  }
+                  return null;
+                })}
+
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (currentPage < totalPages)
+                        handlePageChange(currentPage + 1);
+                    }}
+                    className={
+                      currentPage === totalPages
+                        ? "pointer-events-none opacity-50"
+                        : ""
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )}
       </LeftAsideLayout>
     </BasePage>
   );

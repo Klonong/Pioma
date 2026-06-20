@@ -100,14 +100,14 @@ export function ShippingStep({
         <p className="text-sm font-semibold text-primary mb-3">
           Saved Addresses
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {SAVED_ADDRESSES.map((addr) => {
             const isSelected = selectedAddress === addr.id;
             return (
               <div
                 key={addr.id}
                 className={cn(
-                  "rounded-lg border p-4 transition-all",
+                  "rounded-lg border p-3 sm:p-4 transition-all",
                   isSelected ? "border-primary" : "border-input",
                 )}
               >
@@ -162,14 +162,14 @@ export function ShippingStep({
 
       {(showForm || (!selectedAddress && !showForm)) && (
         <div className="space-y-5">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {field("Full Name", "fullName", "Alexandra K.")}
             {field("Email", "email", "alexandra@email.com")}
           </div>
           {field("Phone Number", "phone", "+62 812 3456 7890", false)}
           {field("Address Line 1", "address", "Jl. Kemang Raya No. 12")}
           {field("Address Line 2", "address2", "Apt / Suite / Floor", false)}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {field("City", "city", "Jakarta Selatan")}
             {field("Province", "province", "DKI Jakarta")}
             {field("Postal Code", "postalCode", "12730")}
@@ -182,7 +182,7 @@ export function ShippingStep({
         <p className="text-xs tracking-widest font-semibold text-primary uppercase mb-3">
           Delivery Method
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {(
             [
               {
@@ -206,7 +206,7 @@ export function ShippingStep({
               type="button"
               onClick={() => onChange({ deliveryMethod: value })}
               className={cn(
-                "flex items-center gap-3 p-4 rounded-lg border text-left transition-all",
+                "flex items-center gap-3 p-3 sm:p-4 rounded-lg border text-left transition-all",
                 data.deliveryMethod === value
                   ? "border-primary bg-primary/5"
                   : "border-input hover:border-muted-foreground",
@@ -227,7 +227,7 @@ export function ShippingStep({
         </div>
       </div>
 
-      <div className="flex justify-end mt-8">
+      <div className="hidden lg:flex justify-end mt-8">
         <Button
           onClick={onNext}
           disabled={!isValid}

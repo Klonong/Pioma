@@ -65,10 +65,10 @@ export default function ProfilePage() {
   const router = useRouter();
   return (
     <BasePage>
-      <div className="flex items-start justify-between mb-10">
-        <div className="flex items-center gap-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 md:mb-10">
+        <div className="flex items-center gap-4 sm:gap-6">
           <div className="relative">
-            <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-secondary">
+            <div className="w-16 sm:w-20 md:w-24 h-16 sm:h-20 md:h-24 rounded-full overflow-hidden border-2 border-secondary">
               <Image
                 src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&h=200&fit=crop&crop=face"
                 alt="Profile"
@@ -77,38 +77,38 @@ export default function ProfilePage() {
                 className="object-cover w-full h-full"
               />
             </div>
-            <button className="absolute bottom-0 right-0 bg-primary text-primary-foreground rounded-full w-7 h-7 flex items-center justify-center text-xs hover:opacity-80 transition-opacity">
+            <button className="absolute bottom-0 right-0 bg-primary text-primary-foreground rounded-full w-6 h-6 sm:w-7 flex items-center justify-center text-xs hover:opacity-80 transition-opacity">
               ✎
             </button>
           </div>
           <div>
-            <h1 className="font-headline text-4xl font-semibold text-primary mb-1">
+            <h1 className="font-headline text-2xl sm:text-3xl md:text-4xl font-semibold text-primary mb-1">
               Greetings, Adeline.
             </h1>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-xs sm:text-sm">
               Member since November 2023
             </p>
           </div>
         </div>
         <Button
           variant="outline"
-          className="border-secondary text-primary hover:bg-secondary/50"
+          className="border-secondary text-primary hover:bg-secondary/50 w-full sm:w-auto"
         >
           Member Rewards
         </Button>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 md:mb-12">
         {quickLinks.map(({ icon: Icon, title, description, link }) => (
           <Card
             onClick={() => router.push(link)}
             key={title}
             className="cursor-pointer hover:shadow-md transition-shadow border-secondary/60"
           >
-            <CardContent className="p-6">
-              <Icon className="w-6 h-6 text-primary mb-4" strokeWidth={1.5} />
-              <h3 className="font-semibold text-primary mb-1">{title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+            <CardContent className="p-4 sm:p-5 md:p-6">
+              <Icon className="w-5 h-5 sm:w-6 text-primary mb-3 sm:mb-4" strokeWidth={1.5} />
+              <h3 className="font-semibold text-primary text-sm sm:text-base mb-1">{title}</h3>
+              <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
                 {description}
               </p>
             </CardContent>
@@ -116,12 +116,12 @@ export default function ProfilePage() {
         ))}
       </div>
 
-      {/* Recent Activity & Wishlist — each 1/2 width */}
-      <div className="flex gap-8">
-        {/* Recent Activity — 1/2 */}
-        <div className="w-1/2">
+      {/* Recent Activity & Wishlist */}
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+        {/* Recent Activity */}
+        <div className="w-full lg:w-1/2">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-headline text-2xl font-semibold text-primary">
+            <h2 className="font-headline text-xl sm:text-2xl font-semibold text-primary">
               Recent Activity
             </h2>
             <Link
@@ -137,13 +137,13 @@ export default function ProfilePage() {
               ({ id, icon: Icon, title, description, time }) => (
                 <div
                   key={id}
-                  className="flex items-start gap-4 p-4 rounded-lg border border-secondary/60 bg-card hover:shadow-sm transition-shadow"
+                  className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border border-secondary/60 bg-card hover:shadow-sm transition-shadow"
                 >
-                  <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center shrink-0 mt-0.5">
-                    <Icon className="w-4 h-4 text-primary" strokeWidth={1.5} />
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-secondary flex items-center justify-center shrink-0 mt-0.5">
+                    <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" strokeWidth={1.5} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-primary text-sm">{title}</p>
+                    <p className="font-medium text-primary text-xs sm:text-sm">{title}</p>
                     <p className="text-muted-foreground text-xs leading-relaxed mt-0.5">
                       {description}
                     </p>
@@ -157,9 +157,10 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="w-1/2">
+        {/* Wishlist */}
+        <div className="w-full lg:w-1/2">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-headline text-2xl font-semibold text-primary">
+            <h2 className="font-headline text-xl sm:text-2xl font-semibold text-primary">
               Wishlist
             </h2>
             <Link
@@ -189,8 +190,8 @@ export default function ProfilePage() {
                 <button className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center hover:bg-white transition-colors">
                   <Heart className="w-4 h-4 text-tertiary fill-tertiary" />
                 </button>
-                <div className="p-3 bg-card">
-                  <p className="font-medium text-primary text-sm truncate">
+                <div className="p-2 sm:p-3 bg-card">
+                  <p className="font-medium text-primary text-xs sm:text-sm truncate">
                     {product.name}
                   </p>
                   <p className="text-muted-foreground text-xs mt-0.5">

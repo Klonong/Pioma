@@ -7,6 +7,7 @@ import { OrderSummary } from "./_components/order-summary";
 import { ShippingStep } from "./_components/shipping-step";
 import { PaymentStep } from "./_components/payment-step";
 import { ReviewStep } from "./_components/review-step";
+import { Button } from "@/components/ui/button";
 import { defaultShipping, defaultPayment } from "./_components/types";
 import type { ShippingData, PaymentData } from "./_components/types";
 
@@ -20,11 +21,24 @@ export default function CheckoutPage() {
       <StepIndicator current={step} />
 
       <RightAsideLayout
-        asideWidth="380px"
-        className="gap-10 xl:gap-14"
-        aside={<OrderSummary shippingMethod={shippingData.deliveryMethod} />}
+        asideWidth="340px"
+        className="gap-8 lg:gap-10 xl:gap-14"
+        aside={
+          <div className="flex flex-col">
+            <OrderSummary shippingMethod={shippingData.deliveryMethod} />
+            <div className="lg:hidden mt-6">
+              <Button
+                onClick={() => setStep(1)}
+                disabled={!shippingData.fullName || !shippingData.email || !shippingData.address || !shippingData.city || !shippingData.postalCode}
+                className="w-full h-12 tracking-widest text-xs bg-black text-white hover:bg-zinc-800 rounded-full lg:rounded-none"
+              >
+                CONTINUE TO PAYMENT
+              </Button>
+            </div>
+          </div>
+        }
       >
-        <div>
+        <div className="px-0 lg:px-4">
           {step === 0 && (
             <ShippingStep
               data={shippingData}

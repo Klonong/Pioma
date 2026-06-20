@@ -29,24 +29,24 @@ export default function AccountSettingsPage() {
     <BasePageCenter>
       <LeftAsideLayout
         aside={
-          <nav className="flex flex-col gap-1 sticky top-24">
+          <nav className="flex flex-row sm:flex-col gap-1 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 -mx-2 px-2 sm:mx-0 sm:px-0">
             {navItems.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => scrollTo(id)}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm text-left w-full transition-colors",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm text-left w-full transition-colors whitespace-nowrap",
                   active === id
                     ? "font-semibold text-primary"
                     : "text-muted-foreground hover:text-primary",
                 )}
               >
                 <Icon className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-                {label}
+                <span className="hidden sm:inline">{label}</span>
               </button>
             ))}
 
-            <div className="mt-8">
+            <div className="hidden sm:block mt-4">
               <Separator className="mb-4" />
               <button className="flex items-center gap-3 px-3 py-2.5 text-sm text-muted-foreground hover:text-destructive transition-colors w-full">
                 <LogOut className="w-4 h-4 shrink-0" strokeWidth={1.5} />
@@ -56,21 +56,21 @@ export default function AccountSettingsPage() {
           </nav>
         }
       >
-        <section id="personal" className="mb-14">
-          <div className="flex items-start justify-between mb-6">
+        <section id="personal" className="mb-10 md:mb-14">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h2 className="font-headline text-2xl font-semibold text-primary">
+              <h2 className="font-headline text-xl sm:text-2xl font-semibold text-primary">
                 Personal Information
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
                 Update your photo and personal details here.
               </p>
             </div>
-            <Button size="sm">Save Changes</Button>
+            <Button size="sm" className="w-full sm:w-auto">Save Changes</Button>
           </div>
 
-          <div className="mb-8">
-            <div className="w-24 h-28 rounded-md overflow-hidden border border-secondary mb-2">
+          <div className="mb-6 md:mb-8">
+            <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-md overflow-hidden border border-secondary mb-2">
               <Image
                 src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&h=240&fit=crop&crop=face"
                 alt="Profile photo"
@@ -84,7 +84,7 @@ export default function AccountSettingsPage() {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-6 gap-y-5 mb-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 mb-5">
             <div className="flex flex-col gap-1.5">
               <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Full Name
@@ -121,9 +121,9 @@ export default function AccountSettingsPage() {
           </div>
         </section>
 
-        <section id="security">
+        <section id="security" className="mt-10 md:mt-14">
           <div className="mb-4">
-            <h2 className="font-headline text-2xl font-semibold text-primary">
+            <h2 className="font-headline text-xl sm:text-2xl font-semibold text-primary">
               Security
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
@@ -132,7 +132,7 @@ export default function AccountSettingsPage() {
           </div>
           <Separator className="mb-6" />
 
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
             <div>
               <p className="text-sm font-semibold text-primary mb-3">
                 Recent Activity
@@ -174,7 +174,7 @@ export default function AccountSettingsPage() {
                 </Label>
                 <Input type="password" defaultValue="password" />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1.5">
                   <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     New Password

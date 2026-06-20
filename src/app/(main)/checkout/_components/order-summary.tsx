@@ -35,23 +35,23 @@ export function OrderSummary({
   const total = taxable + shippingFee + tax;
 
   return (
-    <aside className="bg-secondary/30 rounded-xl p-6 sticky top-24">
-      <h2 className="font-headline text-2xl font-semibold text-primary mb-5">
+    <aside className="bg-secondary/30 rounded-xl p-4 sm:p-6 lg:sticky lg:top-24">
+      <h2 className="font-headline text-xl sm:text-2xl font-semibold text-primary mb-4 sm:mb-5">
         Order Summary
       </h2>
 
       <div className="space-y-4 mb-5">
         {orderItems.map((item) => (
-          <div key={item.id} className="flex gap-3">
-            <div className="w-16 h-16 rounded-md overflow-hidden shrink-0 bg-muted">
+          <div key={item.id} className="flex gap-2 sm:gap-3">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-md overflow-hidden shrink-0 bg-muted">
               <AspectRatio ratio={1}>
                 <Image src={item.image} alt={item.name} fill className="object-cover" />
               </AspectRatio>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-primary text-sm leading-snug">{item.name}</p>
+              <p className="font-semibold text-primary text-xs sm:text-sm leading-snug">{item.name}</p>
               <p className="text-muted-foreground text-xs mt-0.5">{item.variant}</p>
-              <div className="flex justify-between items-end mt-2">
+              <div className="flex justify-between items-end mt-1 sm:mt-2">
                 <span className="text-xs text-muted-foreground">Qty: {item.quantity}</span>
                 <span className="text-sm font-medium text-primary">
                   {formatPrice(item.price * item.quantity)}
@@ -105,12 +105,12 @@ export function OrderSummary({
             placeholder="Pioma10"
             value={promo}
             onChange={(e) => setPromo(e.target.value)}
-            className="text-sm h-10"
+            className="text-sm h-10 flex-1"
           />
           <Button
             variant="outline"
             size="sm"
-            className="h-10 px-4 text-xs tracking-widest"
+            className="h-10 px-3 sm:px-4 text-xs tracking-widest"
             onClick={() => {
               if (promo.toUpperCase() === "ESTETIKA10") setApplied(true);
             }}

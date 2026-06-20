@@ -8,9 +8,9 @@ type ImageSet = [string, string, string];
 // Four confirmed bag photos used as the image pool
 const POOL: [string, string, string, string] = [
   toImg("1548036328-c9fa89d128fa"),
-  toImg("1590874032007-11112ecc8753"),
   toImg("1594938298603-c8148c4dae35"),
   toImg("1553062407-98eeb64c6a62"),
+  toImg("1584917865442-de89df76afd3"),
 ];
 
 /** Returns 3 images starting at `offset`, wrapping around the pool. */
@@ -76,7 +76,7 @@ export const products: Product[] = [
     name: "Sumba Weave Shell",
     description: "Natural Rattan & Brass Hardware",
     price: 1850000,
-    image: toImg("1590874032007-11112ecc8753"),
+    image: toImg("1584917865442-de89df76afd3"),
     category: "crossbody",
     material: ["rattan"],
     variants: createVariants("2", "Sumba Weave Shell", 1850000, 1, [
@@ -106,7 +106,7 @@ export const products: Product[] = [
     name: "Bali Crossbody Compact",
     description: "Handwoven Batik Fabric",
     price: 1200000,
-    image: toImg("1590874032007-11112ecc8753"),
+    image: toImg("1584917865442-de89df76afd3"),
     category: "crossbody",
     material: ["batik"],
     variants: createVariants("4", "Bali Crossbody Compact", 1200000, 1, [
@@ -146,7 +146,7 @@ export const products: Product[] = [
     name: "Yogya Canvas Sling",
     description: "Organic Cotton Canvas & Jute",
     price: 950000,
-    image: toImg("1590874032007-11112ecc8753"),
+    image: toImg("1584917865442-de89df76afd3"),
     category: "crossbody",
     material: ["canvas", "jute"],
     variants: createVariants("7", "Yogya Canvas Sling", 950000, 1, [

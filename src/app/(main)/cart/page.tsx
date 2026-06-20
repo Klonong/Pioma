@@ -12,7 +12,7 @@ import {
   Landmark,
   Truck,
 } from "lucide-react";
-import { BasePage, BasePageCenter, RightAsideLayout } from "@/components/base";
+import { BasePageCenter, RightAsideLayout } from "@/components/base";
 import { products } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -96,10 +96,11 @@ export default function CartPage() {
     <BasePageCenter>
       <RightAsideLayout
         asideWidth="340px"
+        className="gap-8 lg:gap-14"
         aside={
-          <Card className="border border-gray-200 rounded-none shadow-none bg-white sticky top-24">
+          <Card className="border border-gray-200 rounded-xl shadow-none bg-white lg:sticky lg:top-24">
             <CardHeader>
-              <CardTitle className="font-headline text-4xl">
+              <CardTitle className="font-headline text-2xl lg:text-4xl">
                 Order Summary
               </CardTitle>
             </CardHeader>
@@ -125,8 +126,8 @@ export default function CartPage() {
               <Separator />
 
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-semibold">Total</span>
-                <span className="font-headline text-5xl">
+                <span className="text-xl lg:text-2xl font-semibold">Total</span>
+                <span className="font-headline text-2xl lg:text-5xl">
                   {formatPrice(subtotal)}
                 </span>
               </div>
@@ -135,7 +136,7 @@ export default function CartPage() {
                 onClick={() => {
                   router.push("/checkout");
                 }}
-                className="w-full h-11 rounded-none uppercase tracking-[0.18em] font-semibold bg-black text-white hover:bg-zinc-800"
+                className="w-full h-11 rounded-full lg:rounded-none uppercase tracking-[0.18em] font-semibold bg-black text-white hover:bg-zinc-800"
               >
                 Proceed to Checkout
               </Button>
@@ -153,8 +154,8 @@ export default function CartPage() {
           </Card>
         }
       >
-        <section>
-          <h1 className="font-headline text-4xl md:text-5xl leading-none">
+        <section className="px-0 lg:px-4">
+          <h1 className="font-headline text-3xl sm:text-4xl lg:text-5xl leading-none">
             Your Bag
           </h1>
           <p className="text-sm text-gray-700 mt-3 max-w-xl">
@@ -165,7 +166,7 @@ export default function CartPage() {
           <div className="mt-8 space-y-6">
             {items.map((item, index) => (
               <div key={item.id}>
-                <div className="grid grid-cols-[112px_1fr] sm:grid-cols-[140px_1fr] gap-4 sm:gap-6 items-start">
+                <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr] gap-3 sm:gap-4 md:gap-6 items-start">
                   <AspectRatio
                     ratio={1}
                     className="overflow-hidden rounded-md bg-muted"
@@ -178,13 +179,13 @@ export default function CartPage() {
                     />
                   </AspectRatio>
 
-                  <div className="flex flex-col min-h-28 sm:min-h-35">
-                    <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-col min-h-[100px] sm:min-h-[120px]">
+                    <div className="flex items-start justify-between gap-2 sm:gap-4">
                       <div>
-                        <h2 className="text-lg md:text-xl font-semibold tracking-tight">
+                        <h2 className="text-base sm:text-lg md:text-xl font-semibold tracking-tight">
                           {item.name}
                         </h2>
-                        <p className="text-sm italic text-gray-500 mt-1">
+                        <p className="text-xs sm:text-sm italic text-gray-500 mt-1">
                           {item.subtitle}
                         </p>
                       </div>
@@ -222,8 +223,8 @@ export default function CartPage() {
                       </Dialog>
                     </div>
 
-                    <div className="mt-auto flex items-end justify-between gap-4 pt-4">
-                      <div className="inline-flex items-center border rounded-md overflow-hidden h-10">
+                    <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3 pt-3 sm:pt-4">
+                      <div className="inline-flex items-center border rounded-md overflow-hidden h-9 sm:h-10">
                         <Button
                           variant="ghost"
                           size="icon-sm"
@@ -232,7 +233,7 @@ export default function CartPage() {
                         >
                           <Minus className="h-3.5 w-3.5" />
                         </Button>
-                        <span className="w-9 text-center text-sm">
+                        <span className="w-8 sm:w-9 text-center text-sm">
                           {item.quantity}
                         </span>
                         <Button
@@ -247,11 +248,11 @@ export default function CartPage() {
 
                       <div className="text-right">
                         {item.originalPrice && (
-                          <p className="text-sm text-gray-400 line-through">
+                          <p className="text-xs sm:text-sm text-gray-400 line-through">
                             {formatPrice(item.originalPrice)}
                           </p>
                         )}
-                        <p className="text-2xl font-semibold leading-none">
+                        <p className="text-lg sm:text-xl md:text-2xl font-semibold leading-none">
                           {formatPrice(item.price * item.quantity)}
                         </p>
                       </div>
@@ -265,7 +266,7 @@ export default function CartPage() {
 
           <Link
             href="/shop"
-            className="mt-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-gray-600 hover:text-black transition-colors"
+            className="mt-8 lg:mt-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-gray-600 hover:text-black transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Continue Exploring the Collection

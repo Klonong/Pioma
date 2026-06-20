@@ -49,14 +49,14 @@ export function PaymentStep({
         <p className="text-xs tracking-widest font-semibold text-primary uppercase mb-3">
           Payment Method
         </p>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
           {PAYMENT_METHODS.map(({ value, icon: Icon, label }) => (
             <button
               key={value}
               type="button"
               onClick={() => onChange({ method: value })}
               className={cn(
-                "flex flex-col items-center justify-center gap-2 py-4 px-3 rounded-lg border text-center transition-all",
+                "flex flex-col items-center justify-center gap-1.5 sm:gap-2 py-3 sm:py-4 px-2 rounded-lg border text-center transition-all",
                 data.method === value
                   ? "border-primary bg-primary/5"
                   : "border-input hover:border-muted-foreground",
@@ -64,14 +64,14 @@ export function PaymentStep({
             >
               <Icon
                 className={cn(
-                  "w-5 h-5 transition-colors",
+                  "w-4 h-4 sm:w-5 sm:h-5 transition-colors",
                   data.method === value ? "text-primary" : "text-muted-foreground",
                 )}
                 strokeWidth={1.5}
               />
               <span
                 className={cn(
-                  "text-xs font-medium transition-colors",
+                  "text-[10px] sm:text-xs font-medium transition-colors leading-tight",
                   data.method === value ? "text-primary" : "text-muted-foreground",
                 )}
               >
@@ -118,7 +118,7 @@ export function PaymentStep({
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <div>
               <Label className="block text-xs tracking-widest font-semibold text-primary uppercase mb-1.5">
                 Expiry Date
@@ -195,13 +195,13 @@ export function PaymentStep({
       )}
 
       {data.method === "wallet" && (
-        <div className="rounded-lg border border-input p-5 bg-secondary/20 space-y-3">
+        <div className="rounded-lg border border-input p-4 sm:p-5 bg-secondary/20 space-y-3">
           <p className="text-sm font-medium text-primary">Select Digital Wallet</p>
           <div className="grid grid-cols-3 gap-2">
             {["GoPay", "OVO", "Dana"].map((w) => (
               <div
                 key={w}
-                className="border border-input rounded-md py-3 text-center text-sm text-primary font-medium cursor-pointer hover:border-primary hover:bg-primary/5 transition-all"
+                className="border border-input rounded-md py-2.5 sm:py-3 text-center text-xs sm:text-sm text-primary font-medium cursor-pointer hover:border-primary hover:bg-primary/5 transition-all"
               >
                 {w}
               </div>

@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { HeartIcon, ShoppingBagIcon, User } from "lucide-react";
+import { HeartIcon, ShoppingBagIcon, User, Menu, X } from "lucide-react";
 
 const navLinks = [
   { href: "/shop", label: "Shop" },
-  { href: "/#", label: "Best Seller" },
-  { href: "/#", label: "New Arrivals" },
+  { href: "/shop?badge=BESTSELLER", label: "Best Seller" },
+  { href: "/shop?sort=newest", label: "New Arrivals" },
 ];
 
 export default function Header() {
@@ -16,6 +16,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastY, setLastY] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -28,78 +29,171 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [lastY]);
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   return (
-    <header
-      className={[
-        "w-full z-50 transition-all duration-500 ease-in-out flex",
-        scrolled
-          ? "fixed top-0 left-0 right-0 bg-neutral/70 backdrop-blur-md border-b border-secondary/40 shadow-sm"
-          : "relative bg-transparent",
-        scrolled && !visible ? "-translate-y-full" : "translate-y-0",
-      ].join(" ")}
-    >
-      <div className="px-6 h-16 flex items-center justify-around w-full">
-        {/* Logo */}
-        <Link
-          href="/"
-          className="font-headline text-2xl font-bold tracking-[0.15em] text-primary hover:text-tertiary transition-colors duration-300 select-none"
-        >
-          PIOMA
-        </Link>
+    <>
+      <header
+        className={[
+          "w-full z-50 transition-all duration-500 ease-in-out",
+          scrolled
+            ? "fixed top-0 left-0 right-0 bg-neutral/70 backdrop-blur-md border-b border-secondary/40 shadow-sm"
+            : "relative bg-white",
+          scrolled && !visible ? "-translate-y-full" : "translate-y-0",
+        ].join(" ")}
+      >
+        <div className="px-4 sm:px-6 h-16 flex items-center justify-between w-full">
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="lg:hidden text-primary hover:text-tertiary transition-colors p-1 -ml-1"
+            aria-label="Open menu"
+          >
+            <Menu size={24} strokeWidth={1.5} />
+          </button>
 
-        {/* Nav */}
-        <nav className="flex items-center gap-8">
-          {navLinks.map(({ href, label }) => {
-            const isActive = pathname === href || pathname.startsWith(href + "/");
-            return (
-              <Link
-                key={label}
-                href={href}
-                className={[
-                  "relative text-sm font-medium tracking-wide transition-colors duration-300 py-1 group",
-                  isActive
-                    ? "text-tertiary"
-                    : "text-primary hover:text-tertiary",
-                ].join(" ")}
-              >
-                {label}
-                {/* Active / hover underline */}
-                <span
+          {/* Logo */}
+          <Link
+            href="/"
+            className="font-headline text-xl sm:text-2xl font-bold tracking-[0.15em] text-primary hover:text-tertiary transition-colors duration-300 select-none"
+          >
+            PIOMA
+          </Link>
+
+          {/* Nav - hidden on mobile, visible on lg+ */}
+          <nav className="hidden lg:flex items-center gap-8">
+            {navLinks.map(({ href, label }) => {
+              const isActive = pathname === href || pathname.startsWith(href + "/");
+              return (
+                <Link
+                  key={label}
+                  href={href}
                   className={[
-                    "absolute bottom-0 left-0 h-px bg-tertiary transition-all duration-300",
-                    isActive ? "w-full" : "w-0 group-hover:w-full",
+                    "relative text-sm font-medium tracking-wide transition-colors duration-300 py-1 group",
+                    isActive
+                      ? "text-tertiary"
+                      : "text-primary hover:text-tertiary",
                   ].join(" ")}
-                />
-              </Link>
-            );
-          })}
-        </nav>
+                >
+                  {label}
+                  <span
+                    className={[
+                      "absolute bottom-0 left-0 h-px bg-tertiary transition-all duration-300",
+                      isActive ? "w-full" : "w-0 group-hover:w-full",
+                    ].join(" ")}
+                  />
+                </Link>
+              );
+            })}
+          </nav>
 
-        {/* Icons */}
-        <div className="flex items-center gap-4">
-          <Link
-            href="/cart"
-            aria-label="Cart"
-            className="relative text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
-          >
-            <ShoppingBagIcon size={20} strokeWidth={1.5} />
-          </Link>
-          <Link
-            href="/wishlist"
-            aria-label="Wishlist"
-            className="relative text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
-          >
-            <HeartIcon size={20} strokeWidth={1.5} />
-          </Link>
-          <Link
-            href="/profile"
-            aria-label="Profile"
-            className="text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
-          >
-            <User size={20} strokeWidth={1.5} />
-          </Link>
+          {/* Icons */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Link
+              href="/cart"
+              aria-label="Cart"
+              className="relative text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
+            >
+              <ShoppingBagIcon size={20} strokeWidth={1.5} />
+            </Link>
+            <Link
+              href="/wishlist"
+              aria-label="Wishlist"
+              className="relative text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
+            >
+              <HeartIcon size={20} strokeWidth={1.5} />
+            </Link>
+            <Link
+              href="/profile"
+              aria-label="Profile"
+              className="text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
+            >
+              <User size={20} strokeWidth={1.5} />
+            </Link>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[100] lg:hidden">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="absolute left-0 top-0 bottom-0 w-72 max-w-[85vw] bg-white shadow-xl flex flex-col">
+            <div className="flex items-center justify-between px-6 h-16 border-b border-gray-100">
+              <span className="font-headline text-xl font-bold tracking-[0.15em] text-primary">
+                PIOMA
+              </span>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-primary hover:text-tertiary transition-colors p-1 -mr-1"
+                aria-label="Close menu"
+              >
+                <X size={24} strokeWidth={1.5} />
+              </button>
+            </div>
+            <nav className="flex-1 overflow-y-auto py-4">
+              {navLinks.map(({ href, label }) => {
+                const isActive = pathname === href || pathname.startsWith(href + "/");
+                return (
+                  <Link
+                    key={label}
+                    href={href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={[
+                      "flex items-center px-6 py-4 text-base font-medium border-b border-gray-50 transition-colors",
+                      isActive
+                        ? "text-tertiary bg-tertiary/5"
+                        : "text-primary hover:text-tertiary hover:bg-gray-50",
+                    ].join(" ")}
+                  >
+                    {label}
+                  </Link>
+                );
+              })}
+            </nav>
+            <div className="p-6 border-t border-gray-100">
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/cart"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-primary hover:text-tertiary transition-colors"
+                  aria-label="Cart"
+                >
+                  <ShoppingBagIcon size={20} strokeWidth={1.5} />
+                </Link>
+                <Link
+                  href="/wishlist"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-primary hover:text-tertiary transition-colors"
+                  aria-label="Wishlist"
+                >
+                  <HeartIcon size={20} strokeWidth={1.5} />
+                </Link>
+                <Link
+                  href="/profile"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-primary hover:text-tertiary transition-colors"
+                  aria-label="Profile"
+                >
+                  <User size={20} strokeWidth={1.5} />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
