@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { ProductBadge, ProductCategory, ProductMaterial } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export type CreateProductState = {
@@ -9,52 +8,88 @@ export type CreateProductState = {
   message: string;
 };
 
-function generateSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+export type AdminSelectItem = {
+  id: number;
+  name: string;
+};
+
+export type ColorInput = {
+  name: string;
+  hexCode: string;
+  stock: number;
+  imageUrls: string[];
+};
+
+export type CreateProductInput = {
+  name: string;
+  description: string;
+  price: number;
+  discount?: number;
+  categoryId: number;
+  badgeId: number;
+  productImageUrls: string[];
+  colors: ColorInput[];
+};
+
+export async function getAdminFormData(): Promise<{
+  categories: AdminSelectItem[];
+  badges: AdminSelectItem[];
+}> {
+  const [categories, badges] = await Promise.all([
+    prisma.category.findMany({ orderBy: { category_name: "asc" } }),
+    prisma.badge.findMany({ orderBy: { badge_name: "asc" } }),
+  ]);
+
+  return {
+    categories: categories.map((c) => ({
+      id: Number(c.category_id),
+      name: c.category_name,
+    })),
+    badges: badges.map((b) => ({
+      id: Number(b.badge_id),
+      name: b.badge_name,
+    })),
+  };
 }
 
 export async function createProduct(
-  _prevState: CreateProductState,
-  formData: FormData
+  input: CreateProductInput
 ): Promise<CreateProductState> {
-  const name = formData.get("name") as string;
-  const description = formData.get("description") as string;
-  const priceRaw = formData.get("price") as string;
-  const image = formData.get("image") as string;
-  const badge = formData.get("badge") as string;
-  const category = formData.get("category") as string;
-  const materials = formData.getAll("materials") as string[];
-  const isActive = formData.get("is_active") === "on";
+  const {
+    name,
+    description,
+    price,
+    discount,
+    categoryId,
+    badgeId,
+    productImageUrls,
+    colors,
+  } = input;
 
-  if (!name || !description || !priceRaw || !image || !category) {
-    return { success: false, message: "Please fill in all required fields." };
-  }
-
-  const price = Math.round(parseFloat(priceRaw));
-  if (isNaN(price) || price <= 0) {
-    return { success: false, message: "Price must be a positive number." };
-  }
-
-  const slug = generateSlug(name);
+  const id = `prod_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
 
   try {
-    await prisma.ms_product.create({
+    await prisma.products.create({
       data: {
+        id,
         name,
         description,
         price,
-        image,
-        badge: badge ? (badge as ProductBadge) : null,
-        category: category as ProductCategory,
-        slug,
-        is_active: isActive,
-        materials: {
-          create: materials.map((m) => ({ material: m as ProductMaterial })),
+        discount: discount ?? null,
+        category_id: categoryId,
+        badge_id: badgeId,
+        product_images: {
+          create: productImageUrls.map((url) => ({ image_url: url })),
+        },
+        product_colors: {
+          create: colors.map((color) => ({
+            name: color.name,
+            hex_code: color.hexCode,
+            stock: color.stock,
+            product_color_images: {
+              create: color.imageUrls.map((url) => ({ image_url: url })),
+            },
+          })),
         },
       },
     });

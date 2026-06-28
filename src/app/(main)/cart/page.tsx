@@ -27,8 +27,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { AuthRequiredDialog } from "@/components/ui/auth-required-dialog";
 import { formatPrice } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
 
 type CartItem = {
   id: string;
@@ -62,6 +64,8 @@ const starterCart: CartItem[] = [
 
 export default function CartPage() {
   const [items, setItems] = useState<CartItem[]>(starterCart);
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
+  const { user } = useAuth();
 
   const subtotal = useMemo(
     () => items.reduce((sum, item) => sum + item.price * item.quantity, 0),
@@ -134,7 +138,11 @@ export default function CartPage() {
 
               <Button
                 onClick={() => {
-                  router.push("/checkout");
+                  if (!user) {
+                    setAuthDialogOpen(true);
+                  } else {
+                    router.push("/checkout");
+                  }
                 }}
                 className="w-full h-11 rounded-full lg:rounded-none uppercase tracking-[0.18em] font-semibold bg-black text-white hover:bg-zinc-800"
               >
@@ -273,6 +281,13 @@ export default function CartPage() {
           </Link>
         </section>
       </RightAsideLayout>
+
+      <AuthRequiredDialog
+        open={authDialogOpen}
+        onClose={() => setAuthDialogOpen(false)}
+        message="Please sign in to proceed to checkout."
+        redirectPath="/checkout"
+      />
     </BasePageCenter>
   );
 }

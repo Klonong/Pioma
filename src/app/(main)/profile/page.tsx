@@ -11,6 +11,8 @@ import { Separator } from "@/components/ui/separator";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { formatPrice } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import useAuth from "@/hooks/useAuth";
 
 const recentActivity = [
   {
@@ -63,6 +65,18 @@ const quickLinks = [
 
 export default function ProfilePage() {
   const router = useRouter();
+  const { user, profile, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login?redirect=/profile");
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user) return null;
+
+  const displayName = profile?.name ?? user.email?.split("@")[0] ?? "Member";
+
   return (
     <BasePage>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 md:mb-10">
@@ -83,10 +97,10 @@ export default function ProfilePage() {
           </div>
           <div>
             <h1 className="font-headline text-2xl sm:text-3xl md:text-4xl font-semibold text-primary mb-1">
-              Greetings, Adeline.
+              Greetings, {displayName}.
             </h1>
             <p className="text-muted-foreground text-xs sm:text-sm">
-              Member since November 2023
+              {user.email}
             </p>
           </div>
         </div>

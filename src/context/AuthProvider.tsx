@@ -1,17 +1,48 @@
 "use client";
 import client from "@/api/client";
 import { createContext, useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 
-const AuthContext = createContext<{ user: any; loading: boolean } | null>(null);
+export type UserProfile = {
+  id: string;
+  email: string;
+  name: string | null;
+  phone: string | null;
+  role: string;
+};
+
+type AuthContextType = {
+  user: User | null;
+  profile: UserProfile | null;
+  loading: boolean;
+};
+
+const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const fetchProfile = async (userId: string) => {
+    const { data } = await client
+      .from("users")
+      .select("id, email, name, phone, role")
+      .eq("id", userId)
+      .single();
+    setProfile(data as UserProfile | null);
+  };
 
   useEffect(() => {
     const { data: listener } = client.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null);
+      async (_event, session) => {
+        const authUser = session?.user ?? null;
+        setUser(authUser);
+        if (authUser) {
+          await fetchProfile(authUser.id);
+        } else {
+          setProfile(null);
+        }
         setLoading(false);
       },
     );
@@ -22,7 +53,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, profile, loading }}>
       {children}
     </AuthContext.Provider>
   );

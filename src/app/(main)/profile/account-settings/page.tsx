@@ -10,7 +10,9 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import client from "@/api/client";
+import { useRouter } from "next/navigation";
+import { authService } from "@/services/auth.service";
+import { toast } from "sonner";
 
 const navItems = [
   { id: "personal", label: "Personal Information", icon: User },
@@ -20,13 +22,22 @@ const navItems = [
 
 export default function AccountSettingsPage() {
   const [active, setActive] = useState("personal");
+  const router = useRouter();
 
   const scrollTo = (id: string) => {
     setActive(id);
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
-  const user = client.auth.getUser();
-  console.log(user);
+
+  async function handleSignOut() {
+    const { error } = await authService.signOut();
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Signed out successfully.");
+      router.push("/login");
+    }
+  }
 
   return (
     <BasePageCenter>
@@ -51,7 +62,10 @@ export default function AccountSettingsPage() {
 
             <div className="hidden sm:block mt-4">
               <Separator className="mb-4" />
-              <button className="flex items-center gap-3 px-3 py-2.5 text-sm text-muted-foreground hover:text-destructive transition-colors w-full">
+              <button
+                onClick={handleSignOut}
+                className="flex items-center gap-3 px-3 py-2.5 text-sm text-muted-foreground hover:text-destructive transition-colors w-full"
+              >
                 <LogOut className="w-4 h-4 shrink-0" strokeWidth={1.5} />
                 Sign Out
               </button>

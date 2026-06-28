@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { LogOut } from "lucide-react";
+import useAuth from "@/hooks/useAuth";
+import { authService } from "@/services/auth.service";
 
 export default function AdminLayout({
   children,
@@ -11,23 +13,22 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [authorized, setAuthorized] = useState(false);
+  const { user, profile, loading } = useAuth();
 
   useEffect(() => {
-    const isAdmin = sessionStorage.getItem("isAdmin");
-    if (!isAdmin) {
-      router.replace("/login");
-    } else {
-      setAuthorized(true);
+    if (!loading) {
+      if (!user || profile?.role !== "admin") {
+        router.replace("/login");
+      }
     }
-  }, [router]);
+  }, [user, profile, loading, router]);
 
-  function handleLogout() {
-    sessionStorage.removeItem("isAdmin");
+  async function handleLogout() {
+    await authService.signOut();
     router.push("/login");
   }
 
-  if (!authorized) return null;
+  if (loading || !user || profile?.role !== "admin") return null;
 
   return (
     <div className="min-h-screen bg-zinc-50">

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { BasePage, RightAsideLayout } from "@/components/base";
 import { StepIndicator } from "./_components/step-indicator";
 import { OrderSummary } from "./_components/order-summary";
@@ -10,11 +11,22 @@ import { ReviewStep } from "./_components/review-step";
 import { Button } from "@/components/ui/button";
 import { defaultShipping, defaultPayment } from "./_components/types";
 import type { ShippingData, PaymentData } from "./_components/types";
+import useAuth from "@/hooks/useAuth";
 
 export default function CheckoutPage() {
   const [step, setStep] = useState(0);
   const [shippingData, setShippingData] = useState<ShippingData>(defaultShipping);
   const [paymentData, setPaymentData] = useState<PaymentData>(defaultPayment);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login?redirect=/checkout");
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user) return null;
 
   return (
     <BasePage>

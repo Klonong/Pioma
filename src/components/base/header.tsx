@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HeartIcon, ShoppingBagIcon, User, Menu, X } from "lucide-react";
+import useAuth from "@/hooks/useAuth";
+import { AuthRequiredDialog } from "@/components/ui/auth-required-dialog";
 
 const navLinks = [
   { href: "/shop", label: "Shop" },
@@ -13,6 +15,18 @@ const navLinks = [
 
 export default function Header() {
   const pathname = usePathname();
+  const { user, profile } = useAuth();
+  const [authDialog, setAuthDialog] = useState<{
+    open: boolean;
+    message: string;
+    redirect: string;
+  }>({ open: false, message: "", redirect: "" });
+
+  function requireAuth(message: string, redirect: string) {
+    if (user) return false;
+    setAuthDialog({ open: true, message, redirect });
+    return true;
+  }
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastY, setLastY] = useState(0);
@@ -98,27 +112,45 @@ export default function Header() {
 
           {/* Icons */}
           <div className="flex items-center gap-3 sm:gap-4">
-            <Link
-              href="/cart"
+            <button
+              onClick={() => {
+                if (!requireAuth("Please sign in to view your shopping bag.", "/cart")) {
+                  window.location.href = "/cart";
+                }
+              }}
               aria-label="Cart"
               className="relative text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
             >
               <ShoppingBagIcon size={20} strokeWidth={1.5} />
-            </Link>
-            <Link
-              href="/wishlist"
+            </button>
+            <button
+              onClick={() => {
+                if (!requireAuth("Please sign in to view your wishlist.", "/wishlist")) {
+                  window.location.href = "/wishlist";
+                }
+              }}
               aria-label="Wishlist"
               className="relative text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
             >
               <HeartIcon size={20} strokeWidth={1.5} />
-            </Link>
-            <Link
-              href="/profile"
-              aria-label="Profile"
-              className="text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
-            >
-              <User size={20} strokeWidth={1.5} />
-            </Link>
+            </button>
+            {user ? (
+              <Link
+                href={profile?.role === "admin" ? "/admin/create-product" : "/profile"}
+                aria-label="Profile"
+                className="text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
+              >
+                <User size={20} strokeWidth={1.5} />
+              </Link>
+            ) : (
+              <button
+                onClick={() => requireAuth("Please sign in to access your profile.", "/profile")}
+                aria-label="Profile"
+                className="text-primary hover:text-tertiary transition-colors duration-300 hover:scale-110 active:scale-95 transform"
+              >
+                <User size={20} strokeWidth={1.5} />
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -165,35 +197,63 @@ export default function Header() {
             </nav>
             <div className="p-6 border-t border-gray-100">
               <div className="flex items-center gap-4">
-                <Link
-                  href="/cart"
-                  onClick={() => setMobileMenuOpen(false)}
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    if (!requireAuth("Please sign in to view your shopping bag.", "/cart")) {
+                      window.location.href = "/cart";
+                    }
+                  }}
                   className="text-primary hover:text-tertiary transition-colors"
                   aria-label="Cart"
                 >
                   <ShoppingBagIcon size={20} strokeWidth={1.5} />
-                </Link>
-                <Link
-                  href="/wishlist"
-                  onClick={() => setMobileMenuOpen(false)}
+                </button>
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    if (!requireAuth("Please sign in to view your wishlist.", "/wishlist")) {
+                      window.location.href = "/wishlist";
+                    }
+                  }}
                   className="text-primary hover:text-tertiary transition-colors"
                   aria-label="Wishlist"
                 >
                   <HeartIcon size={20} strokeWidth={1.5} />
-                </Link>
-                <Link
-                  href="/profile"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-primary hover:text-tertiary transition-colors"
-                  aria-label="Profile"
-                >
-                  <User size={20} strokeWidth={1.5} />
-                </Link>
+                </button>
+                {user ? (
+                  <Link
+                    href={profile?.role === "admin" ? "/admin/create-product" : "/profile"}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-primary hover:text-tertiary transition-colors"
+                    aria-label="Profile"
+                  >
+                    <User size={20} strokeWidth={1.5} />
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      requireAuth("Please sign in to access your profile.", "/profile");
+                    }}
+                    className="text-primary hover:text-tertiary transition-colors"
+                    aria-label="Profile"
+                  >
+                    <User size={20} strokeWidth={1.5} />
+                  </button>
+                )}
               </div>
             </div>
           </div>
         </div>
       )}
+
+      <AuthRequiredDialog
+        open={authDialog.open}
+        onClose={() => setAuthDialog((prev) => ({ ...prev, open: false }))}
+        message={authDialog.message}
+        redirectPath={authDialog.redirect}
+      />
     </>
   );
 }

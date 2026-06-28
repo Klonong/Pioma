@@ -35,18 +35,34 @@ import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getCategories, type CategoryItem } from "./actions";
+import { staticFilterSections } from "@/components/ui/filter";
 
 const ITEMS_PER_PAGE = 6;
 
 export default function Shop() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
+
+  useEffect(() => {
+    getCategories().then(setCategories);
+  }, []);
 
   const sortByItems = [
     { label: "Newest Arrivals", value: "newest" },
     { label: "Price: Low to High", value: "price-asc" },
     { label: "Price: High to Low", value: "price-desc" },
     { label: "Best Sellers", value: "best-sellers" },
+  ];
+
+  const categorySections = [
+    {
+      title: "Category",
+      type: "category" as const,
+      items: categories.map((c) => ({ label: c.name, value: String(c.id) })),
+    },
+    ...staticFilterSections,
   ];
 
   const filteredProducts = products.filter((product) => {
@@ -146,7 +162,7 @@ export default function Shop() {
         </div>
       </div>
 
-      <LeftAsideLayout aside={<Filter />} className="mt-8">
+      <LeftAsideLayout aside={<Filter sections={categorySections} />} className="mt-8">
         {currentProducts.length > 0 ? (
           <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {currentProducts.map((product) => (

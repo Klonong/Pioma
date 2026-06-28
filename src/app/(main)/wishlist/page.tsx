@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { BasePageCenter } from "@/components/base";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
@@ -7,9 +11,21 @@ import { formatPrice } from "@/lib/utils";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import useAuth from "@/hooks/useAuth";
 
 export default function WishlistPage() {
   const wishlistProducts = products.slice(0, 4);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login?redirect=/wishlist");
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user) return null;
+
   return (
     <BasePageCenter>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">

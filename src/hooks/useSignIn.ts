@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { authService } from "@/services/auth.service";
-
-const ADMIN_EMAIL = "admin@pioma.com";
-const ADMIN_PASSWORD = "pioma@dmin";
+import client from "@/api/client";
 
 export function useSignIn() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -19,20 +18,30 @@ export function useSignIn() {
     e.preventDefault();
     setLoading(true);
     try {
-      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        sessionStorage.setItem("isAdmin", "true");
-        toast.success("Welcome, Admin!");
-        router.push("/admin/create-product");
+      const { data, error } = await authService.signIn(email, password);
+      if (error) {
+        toast.error(error.message);
         return;
       }
 
-      const { error } = await authService.signIn(email, password);
-      if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success("Signed in successfully!");
-        router.push("/");
+      const userId = data.user?.id;
+      if (userId) {
+        const { data: profile } = await client
+          .from("users")
+          .select("role")
+          .eq("id", userId)
+          .single();
+
+        if (profile?.role === "admin") {
+          toast.success("Welcome, Admin!");
+          router.push("/admin/create-product");
+          return;
+        }
       }
+
+      toast.success("Signed in successfully!");
+      const redirect = searchParams.get("redirect");
+      router.push(redirect ?? "/");
     } finally {
       setLoading(false);
     }

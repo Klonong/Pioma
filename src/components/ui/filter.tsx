@@ -281,6 +281,37 @@ function PriceRangeItems() {
   );
 }
 
+export const staticFilterSections: FilterSection[] = [
+  {
+    title: "Price Range",
+    type: "price-range",
+    items: [],
+  },
+  {
+    title: "Material",
+    type: "material",
+    items: [
+      { label: "Leather", value: "leather" },
+      { label: "Rattan", value: "rattan" },
+      { label: "Canvas", value: "canvas" },
+      { label: "Batik Fabric", value: "batik" },
+      { label: "Jute", value: "jute" },
+      { label: "Synthetic", value: "synthetic" },
+    ],
+  },
+  {
+    title: "Palette",
+    type: "palette",
+    items: [
+      { label: "Black", value: "black" },
+      { label: "Tan", value: "tan" },
+      { label: "Brown", value: "brown" },
+      { label: "Cream", value: "cream" },
+      { label: "Green", value: "green" },
+    ],
+  },
+];
+
 const defaultSections: FilterSection[] = [
   {
     title: "Category",
