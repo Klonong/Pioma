@@ -1,5 +1,3 @@
 export default function AddressPage() {
-    return (
-        <div>ahhng</div>
-    )
+  return <div>ahhng</div>;
 }

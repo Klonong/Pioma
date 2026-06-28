@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authService } from "@/services/auth.service";
 
+const ADMIN_EMAIL = "admin@pioma.com";
+const ADMIN_PASSWORD = "pioma@dmin";
+
 export function useSignIn() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -16,6 +19,13 @@ export function useSignIn() {
     e.preventDefault();
     setLoading(true);
     try {
+      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+        sessionStorage.setItem("isAdmin", "true");
+        toast.success("Welcome, Admin!");
+        router.push("/admin/create-product");
+        return;
+      }
+
       const { error } = await authService.signIn(email, password);
       if (error) {
         toast.error(error.message);

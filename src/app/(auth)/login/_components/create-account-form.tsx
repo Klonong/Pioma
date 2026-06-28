@@ -14,7 +14,18 @@ const labelClass =
   "block text-label-sm font-semibold tracking-widest text-zinc-400 mb-1.5";
 
 export function CreateAccountForm() {
-  const { email, setEmail, phone, setPhone, password, setPassword, confirm, setConfirm, loading, handleSignUp } = useSignUp();
+  const {
+    email,
+    setEmail,
+    phone,
+    setPhone,
+    password,
+    setPassword,
+    confirm,
+    setConfirm,
+    loading,
+    handleSignUp,
+  } = useSignUp();
 
   return (
     <form onSubmit={handleSignUp} className="space-y-4">
@@ -83,7 +94,9 @@ export function CreateAccountForm() {
       </button>
 
       <Divider />
-      <SocialButtons onOAuth={(p: "google" | "apple") => authService.signInWithOAuth(p)} />
+      <SocialButtons
+        onOAuth={(p: "google" | "apple") => authService.signInWithOAuth(p)}
+      />
     </form>
   );
 }

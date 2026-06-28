@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import client from "@/api/client";
 
 const navItems = [
   { id: "personal", label: "Personal Information", icon: User },
@@ -24,6 +25,8 @@ export default function AccountSettingsPage() {
     setActive(id);
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
+  const user = client.auth.getUser();
+  console.log(user);
 
   return (
     <BasePageCenter>

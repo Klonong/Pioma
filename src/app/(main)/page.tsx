@@ -125,7 +125,7 @@ export default function Home() {
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-6">
                 <p className="font-headline text-lg sm:text-xl md:text-2xl font-bold text-white">
                   {cat.name}
@@ -179,7 +179,7 @@ export default function Home() {
       {/* ── Story / Craftsmanship Banner ─────────────────────── */}
       <section className="relative w-full py-20 md:py-32 px-4 sm:px-6 md:px-12 lg:px-20">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
-          <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
+          <div className="relative aspect-4/5 rounded-2xl overflow-hidden">
             <Image
               src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&h=1000&fit=crop"
               alt="Craftsmanship"
