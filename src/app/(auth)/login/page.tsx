@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { SignInForm } from "./_components/sign-in-form";
 import { CreateAccountForm } from "./_components/create-account-form";
@@ -39,33 +40,35 @@ export default function LoginPage() {
       {/* ── Right panel ── */}
       <div className="flex-1 flex flex-col items-center justify-between bg-white px-8 py-10 lg:px-16">
         <div className="w-full max-w-sm flex-1 flex flex-col justify-center">
-          <Tabs defaultValue="sign-in" className="w-full">
-            <TabsList
-              variant="line"
-              className="w-full justify-start rounded-none bg-transparent p-0 h-auto border-b border-zinc-200 mb-8 gap-0"
-            >
-              <TabsTrigger
-                value="sign-in"
-                className="rounded-none px-0 mr-6 pb-3 h-auto text-label-sm font-semibold tracking-widest data-active:text-zinc-900 text-zinc-400 data-active:border-b-2 data-active:border-zinc-900 after:hidden"
+          <Suspense fallback={<div className="h-64" />}>
+            <Tabs defaultValue="sign-in" className="w-full">
+              <TabsList
+                variant="line"
+                className="w-full justify-start rounded-none bg-transparent p-0 h-auto border-b border-zinc-200 mb-8 gap-0"
               >
-                SIGN IN
-              </TabsTrigger>
-              <TabsTrigger
-                value="create-account"
-                className="rounded-none px-0 pb-3 h-auto text-label-sm font-semibold tracking-widest data-active:text-zinc-900 text-zinc-400 data-active:border-b-2 data-active:border-zinc-900 after:hidden"
-              >
-                CREATE ACCOUNT
-              </TabsTrigger>
-            </TabsList>
+                <TabsTrigger
+                  value="sign-in"
+                  className="rounded-none px-0 mr-6 pb-3 h-auto text-label-sm font-semibold tracking-widest data-active:text-zinc-900 text-zinc-400 data-active:border-b-2 data-active:border-zinc-900 after:hidden"
+                >
+                  SIGN IN
+                </TabsTrigger>
+                <TabsTrigger
+                  value="create-account"
+                  className="rounded-none px-0 pb-3 h-auto text-label-sm font-semibold tracking-widest data-active:text-zinc-900 text-zinc-400 data-active:border-b-2 data-active:border-zinc-900 after:hidden"
+                >
+                  CREATE ACCOUNT
+                </TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="sign-in">
-              <SignInForm />
-            </TabsContent>
+              <TabsContent value="sign-in">
+                <SignInForm />
+              </TabsContent>
 
-            <TabsContent value="create-account">
-              <CreateAccountForm />
-            </TabsContent>
-          </Tabs>
+              <TabsContent value="create-account">
+                <CreateAccountForm />
+              </TabsContent>
+            </Tabs>
+          </Suspense>
         </div>
 
         <p className="text-label-sm text-zinc-400 tracking-[0.2em] mt-8">

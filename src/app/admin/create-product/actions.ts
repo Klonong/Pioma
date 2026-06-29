@@ -66,12 +66,9 @@ export async function createProduct(
     colors,
   } = input;
 
-  const id = `prod_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-
   try {
     await prisma.products.create({
       data: {
-        id,
         name,
         description,
         price,
